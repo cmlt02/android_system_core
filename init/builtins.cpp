@@ -234,9 +234,21 @@ int do_enable(int nargs, char **args)
 int do_exec(int nargs, char** args) {
     service* svc = make_exec_oneshot_service(nargs, args);
     if (svc == NULL) {
-        return -1;
     }
     service_start(svc, NULL);
+int do_exec(int nargs, char **args)
+{
+    pid_t pid;
+    int status;
+
+    pid = fork();
+    if (pid == 0) {
+        if (execve(args[1], &(args[1]), NULL) < 0) {
+            ERROR("cannot execve('%s'): %s\n", args[1], strerror(errno));
+            _exit(127);
+        }
+    }
+    waitpid(pid, &status, 0);
     return 0;
 }
 
