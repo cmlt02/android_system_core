@@ -236,8 +236,7 @@ int do_exec(int nargs, char** args) {
     if (svc == NULL) {
     }
     service_start(svc, NULL);
-int do_exec(int nargs, char **args)
-{
+int do_exec(int nargs, char **args) {
     pid_t pid;
     int status;
 
@@ -252,24 +251,20 @@ int do_exec(int nargs, char **args)
     return 0;
 }
 
-int do_export(int nargs, char **args)
-{
+int do_export(int nargs, char **args) {
     return add_environment(args[1], args[2]);
 }
 
-int do_hostname(int nargs, char **args)
-{
+int do_hostname(int nargs, char **args) {
     return write_file("/proc/sys/kernel/hostname", args[1]);
 }
 
-int do_ifup(int nargs, char **args)
-{
+int do_ifup(int nargs, char **args) {
     return __ifupdown(args[1], 1);
 }
 
 
-static int do_insmod_inner(int nargs, char **args, int opt_len)
-{
+static int do_insmod_inner(int nargs, char **args, int opt_len) {
     char options[opt_len + 1];
     int i;
 
@@ -285,8 +280,7 @@ static int do_insmod_inner(int nargs, char **args, int opt_len)
     return insmod(args[1], options);
 }
 
-int do_insmod(int nargs, char **args)
-{
+int do_insmod(int nargs, char **args) {
     int i;
     int size = 0;
 
@@ -298,8 +292,7 @@ int do_insmod(int nargs, char **args)
     return do_insmod_inner(nargs, args, size);
 }
 
-int do_mkdir(int nargs, char **args)
-{
+int do_mkdir(int nargs, char **args) {
     mode_t mode = 0755;
     int ret;
 
@@ -367,8 +360,7 @@ static struct {
 #define DATA_MNT_POINT "/data"
 
 /* mount <type> <device> <path> <flags ...> <options> */
-int do_mount(int nargs, char **args)
-{
+int do_mount(int nargs, char **args) {
     char tmp[64];
     char *source, *target, *system;
     char *options = NULL;
@@ -467,8 +459,7 @@ exit_success:
 
 }
 
-static int wipe_data_via_recovery()
-{
+static int wipe_data_via_recovery() {
     mkdir("/cache/recovery", 0700);
     int fd = open("/cache/recovery/command", O_RDWR|O_CREAT|O_TRUNC|O_CLOEXEC, 0600);
     if (fd >= 0) {
@@ -620,8 +611,7 @@ int do_setrlimit(int nargs, char **args)
     return setrlimit(resource, &limit);
 }
 
-int do_start(int nargs, char **args)
-{
+int do_start(int nargs, char **args) {
     struct service *svc;
     svc = service_find_by_name(args[1]);
     if (svc) {
@@ -630,8 +620,7 @@ int do_start(int nargs, char **args)
     return 0;
 }
 
-int do_stop(int nargs, char **args)
-{
+int do_stop(int nargs, char **args) {
     struct service *svc;
     svc = service_find_by_name(args[1]);
     if (svc) {
@@ -640,8 +629,7 @@ int do_stop(int nargs, char **args)
     return 0;
 }
 
-int do_restart(int nargs, char **args)
-{
+int do_restart(int nargs, char **args) {
     struct service *svc;
     svc = service_find_by_name(args[1]);
     if (svc) {
@@ -650,8 +638,7 @@ int do_restart(int nargs, char **args)
     return 0;
 }
 
-int do_powerctl(int nargs, char **args)
-{
+int do_powerctl(int nargs, char **args) {
     char command[PROP_VALUE_MAX];
     int res;
     int len = 0;
@@ -700,29 +687,24 @@ int do_powerctl(int nargs, char **args)
                                         callback_on_ro_remount);
 }
 
-int do_trigger(int nargs, char **args)
-{
+int do_trigger(int nargs, char **args) {
     action_for_each_trigger(args[1], action_add_queue_tail);
     return 0;
 }
 
-int do_symlink(int nargs, char **args)
-{
+int do_symlink(int nargs, char **args) {
     return symlink(args[1], args[2]);
 }
 
-int do_rm(int nargs, char **args)
-{
+int do_rm(int nargs, char **args) {
     return unlink(args[1]);
 }
 
-int do_rmdir(int nargs, char **args)
-{
+int do_rmdir(int nargs, char **args) {
     return rmdir(args[1]);
 }
 
-int do_sysclktz(int nargs, char **args)
-{
+int do_sysclktz(int nargs, char **args) {
     struct timezone tz;
 
     if (nargs != 2)
@@ -753,8 +735,7 @@ int do_verity_update_state(int nargs, char** args) {
     return fs_mgr_update_verity_state(verity_update_property);
 }
 
-int do_write(int nargs, char **args)
-{
+int do_write(int nargs, char **args) {
     const char *path = args[1];
     const char *value = args[2];
 
@@ -766,8 +747,7 @@ int do_write(int nargs, char **args)
     return write_file(path, expanded_value);
 }
 
-int do_copy(int nargs, char **args)
-{
+int do_copy(int nargs, char **args) {
     char *buffer = NULL;
     int rc = 0;
     int fd1 = -1, fd2 = -1;
